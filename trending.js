@@ -3,10 +3,23 @@
     const BUSINESS_ID = "6304aa113cb8eba9248eac8d";
     let CURRENCY = "BDT";
     const LoadDataFunction = async (url) => { try { let response = await fetch(url, { method: "get", headers: { "businessid": `${BUSINESS_ID}`, } }); response = await response.json(); if (response.Error) { return console.log(response.Error) }; return response; } catch (e) { return }; };
-    const treandingProduct = await LoadDataFunction(`https://api.soppiya.com/v2.1/widget/home/trending`);
+    const treandingProduct = await LoadDataFunction(`https://api.soppiya.com/v2.1/widget/home/trending?limit=5`);
+
+    const skeleton_wrapper = document.getElementById("s0207_trending_all_product_id");
+    const skeleton_div = document.getElementById("fc001_feature_catagories_skeleton_template_id");
+
+    for (let i = 0; i < 5; i++) {
+        skeleton_wrapper.append(skeleton_div.content.cloneNode(true));
+
+    }
 
     async function displayTrendingItem(treandingProduct) {
         console.log("treandingProduct", treandingProduct);
+        if (treandingProduct.length) {
+            for (let i = 0; i < 5; i++) {
+                skeleton_wrapper.children[0]?.remove();
+            }
+        }
         for (let i = 0; i < treandingProduct.length; i++) {
             const singleProduct = treandingProduct[i];
             let FeatureImage = `https://www.soppiya.com/media/images/${BUSINESS_ID}/item/${singleProduct?._id}/${singleProduct?.image}`;
@@ -15,7 +28,6 @@
             s0207_trending_single_product.appendChild(s0207_top_area);
             const s0207_product_bottom_area = elementMaker("div", ["s0207_product_bottom_area"]);
             s0207_trending_single_product.appendChild(s0207_product_bottom_area);
-
 
             if (singleProduct?.flashPrice) {
                 const s0207_product_badge = elementMaker("div", ["s0207_product_badge"]);
@@ -109,7 +121,11 @@
             s0207_add_cart_btn.textContent = `Add to cart`
             s0207_add_cart_btn_wrapper.appendChild(s0207_add_cart_btn);
 
-            document.querySelector(".s0207_trending_all_product").appendChild(s0207_trending_single_product)
+            document.querySelector(".s0207_trending_all_product").appendChild(s0207_trending_single_product);
+            s0207_trending_single_product.addEventListener("click", function () {
+                typeof handleNavigate == "function" && handleNavigate(`/item/${singleProduct.slug}`);
+                console.log("item slug", `/item/${singleProduct.slug}`);
+            });
         }
 
 
