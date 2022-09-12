@@ -16,13 +16,17 @@
             const s0207_product_bottom_area = elementMaker("div", ["s0207_product_bottom_area"]);
             s0207_trending_single_product.appendChild(s0207_product_bottom_area);
 
-            const s0207_product_badge = elementMaker("div", ["s0207_product_badge"]);
-            s0207_top_area.appendChild(s0207_product_badge);
-            const s0207_product_badge_bg = elementMaker("div", ["s0207_product_badge_bg"]);
-            s0207_product_badge.appendChild(s0207_product_badge_bg);
-            const s0207_product_badge_name = elementMaker("p", ["s0207_product_badge_name"]);
-            s0207_product_badge_name.innerText = `Sale`;
-            s0207_product_badge.appendChild(s0207_product_badge_name);
+
+            if (singleProduct?.flashPrice) {
+                const s0207_product_badge = elementMaker("div", ["s0207_product_badge"]);
+                s0207_top_area.appendChild(s0207_product_badge);
+                const s0207_product_badge_bg = elementMaker("div", ["s0207_product_badge_bg"]);
+                s0207_product_badge.appendChild(s0207_product_badge_bg);
+                const s0207_product_badge_name = elementMaker("p", ["s0207_product_badge_name"]);
+                s0207_product_badge_name.innerText = `Sale`;
+                s0207_product_badge.appendChild(s0207_product_badge_name);
+            }
+
 
             const s0207_add_wishlist_icon = elementMaker("div", ["s0207_add_wishlist_icon"]);
             s0207_add_wishlist_icon.innerHTML = `
@@ -47,18 +51,63 @@
             setAttributes(productImage, { "src": `${FeatureImage}` });
             s0207_product_img_container.appendChild(productImage);
 
-            const s0207_product_name_wrapper = elementMaker("div" , ["s0207_product_name_wrapper"]);
+            const s0207_product_name_wrapper = elementMaker("div", ["s0207_product_name_wrapper"]);
             s0207_product_bottom_area.appendChild(s0207_product_name_wrapper);
-            const s0207_product_name = elementMaker("p" , ["s0207_product_name"]);
+            const s0207_product_name = elementMaker("p", ["s0207_product_name"]);
             s0207_product_name.textContent = `${singleProduct.name}`;
             s0207_product_name_wrapper.appendChild(s0207_product_name);
 
-            const s0207_product_rating_wrapper = elementMaker("div" , ["s0207_product_rating_wrapper"]);
-            
+            const s0207_product_rating_wrapper = elementMaker("div", ["s0207_product_rating_wrapper"]);
+            s0207_product_bottom_area.appendChild(s0207_product_rating_wrapper);
+            const s0207_product_rating = elementMaker("ul", ["s0207_product_rating"]);
+            s0207_product_rating_wrapper.appendChild(s0207_product_rating);
+            const ratingNumber = singleProduct?.reviewRating?.rating;
+
+            function showReviewStar(ratingNumber, s0207_product_rating) {
+                let stars = ratingNumber;
+                let starsFloor = Math.floor(stars);
+                for (let i = 0; i < starsFloor; i++) {
+                    let fc001_review_star = elementMaker("li", ["s0207_product_rating_start"]);
+                    fc001_review_star.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11 11"> <path id="Star" d="M59.5,72.843,62.9,75,62,70.93l3-2.736-3.955-.357L59.5,64l-1.545,3.837L54,68.194l3,2.736L56.1,75Z" transform="translate(-54 -64)" fill="#fed300"></path> </svg>
+                     `
+
+                    s0207_product_rating.appendChild(fc001_review_star);
+
+                };
+                let starDecimal = stars - starsFloor;
+                if (starDecimal > 0) {
+                    let fc001_review_star = elementMaker("li", ["s0207_product_rating_start"]);
+                    fc001_review_star.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="11" height="11" viewBox="0 0 11 11"> <defs> <linearGradient id="linear-gradient" y1="0.384" x2="1" y2="0.381" gradientUnits="objectBoundingBox"> <stop offset="0" stop-color="#fed300"></stop> <stop offset="0.5" stop-color="#fbd414"></stop> <stop offset="0.503" stop-color="#dedbcc"></stop> <stop offset="1" stop-color="#dcdcdc"></stop> </linearGradient> </defs> <path id="Star" d="M59.5,72.843,62.9,75,62,70.93l3-2.736-3.955-.357L59.5,64l-1.545,3.837L54,68.194l3,2.736L56.1,75Z" transform="translate(-54 -64)" fill="url(#linear-gradient)"></path> </svg>
+                                `;
+                    s0207_product_rating.appendChild(fc001_review_star);
+                };
+                if ((5 - stars) > 0) {
+                    for (let i = 0; i < Math.floor((5 - stars)); i++) {
+                        let fc001_review_star = elementMaker("li", ["s0207_product_rating_start"]);
+                        fc001_review_star.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11 11"> <path id="Star" d="M59.5,72.843,62.9,75,62,70.93l3-2.736-3.955-.357L59.5,64l-1.545,3.837L54,68.194l3,2.736L56.1,75Z" transform="translate(-54 -64)" fill="#dfdfdf"></path> </svg>
+                                `;
+                        s0207_product_rating.appendChild(fc001_review_star);
+                    };
+                };
 
 
+            }
+            showReviewStar(ratingNumber, s0207_product_rating);
 
+            const s0207_product_price_container = elementMaker("div", ["s0207_product_price_container"]);
+            s0207_product_bottom_area.appendChild(s0207_product_price_container);
+            const s0207_product_price = elementMaker("p", ["s0207_product_price"]);
+            s0207_product_price.textContent = `${CURRENCY} ${singleProduct.price}`;
+            s0207_product_price_container.appendChild(s0207_product_price);
 
+            const s0207_add_cart_btn_wrapper = elementMaker("div", ["s0207_add_cart_btn_wrapper"]);
+            s0207_product_bottom_area.appendChild(s0207_add_cart_btn_wrapper);
+            const s0207_add_cart_btn = elementMaker("button", ["s0207_add_cart_btn"]);
+            s0207_add_cart_btn.textContent = `Add to cart`
+            s0207_add_cart_btn_wrapper.appendChild(s0207_add_cart_btn);
 
             document.querySelector(".s0207_trending_all_product").appendChild(s0207_trending_single_product)
         }
@@ -68,8 +117,6 @@
 
     };
     await displayTrendingItem(treandingProduct);
-
-
 
     function elementMaker(name, className, id) {
         try {
