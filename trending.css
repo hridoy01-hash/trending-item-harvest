@@ -82,7 +82,7 @@ body {
 .s0207_product_badge_name {
     font-size: 9px;
     font-weight: 700;
-    color: #FFFFFF;
+    color: #000;
     position: absolute;
     top: 52%;
     left: 48%;
@@ -99,7 +99,7 @@ body {
     position: absolute;
     height: 20px;
     width: 20px;
-    background-color: #1E272E;
+    background-color: var(--primaryColor);
     position: absolute;
     transform: rotate(-45deg);
     border-radius: 3px;
